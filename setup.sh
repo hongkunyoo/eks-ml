@@ -21,8 +21,9 @@ echo '>> done'
 
 # k8s cluster
 echo '>> Creating k8s cluster...'
+echo 'eksctl create cluster --name eks-ml --nodes 20 --node-type m5.xlarge'
 echo '>> This will take a while'
-eksctl create cluster --name eks-ml --nodes 5 --node-type m5.xlarge
+eksctl create cluster --name eks-ml --nodes 20 --node-type m5.xlarge
 sleep 20
 
 for node in $(kubectl get node | cut -d ' ' -f1 | sed 1d)
