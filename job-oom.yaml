@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: exp01-oom
+spec:
+  template:
+    spec:
+      containers:
+      - name: ml
+        image: hongkunyoo/eks-ml:oom
+        imagePullPolicy: Always
+        command: ["python", "-u", "train-oom.py"]
+        args: ['20', 'softmax', '0.5']
+        resources:
+          limits:
+            cpu: "1"
+            memory: "5Gi"
+      nodeSelector:
+        ml-type: cpu
+      restartPolicy: Never
+  backoffLimit: 0
+

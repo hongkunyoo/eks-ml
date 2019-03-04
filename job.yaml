@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: exp01
+spec:
+  template:
+    spec:
+      containers:
+      - name: ml
+        image: hongkunyoo/eks-ml:model01
+        imagePullPolicy: Always
+        command: ["python", "-u", "train.py"]
+        args: ['20', 'softmax', '0.5']
+        resources:
+          limits:
+            cpu: "1"
+            memory: "5Gi"
+      nodeSelector:
+        ml-type: cpu
+      restartPolicy: Never
+  backoffLimit: 0
+

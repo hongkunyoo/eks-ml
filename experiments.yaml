@@ -1,0 +1,32 @@
+- script: hongkunyoo/eks-ml:model01
+  args:
+  - [10, softmax,  0.5, cpu]
+  - [10, relu,     0.5, cpu]
+  - [10, tanh,     0.5, cpu]
+  - [10, linear,   0.5, cpu]
+  - [20, selu,     0.5, cpu]
+  - [20, elu,      0.5, cpu]
+  - [25, sigmoid,  0.5, cpu]
+  - [25, softsign, 0.5, cpu]
+
+- script: hongkunyoo/eks-ml:model02
+  args:
+  - [10, softmax,  0.7, mem]
+  - [10, relu,     0.7, mem]
+  - [10, tanh,     0.7, mem]
+  - [10, linear,   0.7, mem]
+  - [20, selu,     0.7, mem]
+  - [20, elu,      0.7, mem]
+  - [25, sigmoid,  0.7, mem]
+  - [25, softsign, 0.7, mem]
+
+- script: hongkunyoo/eks-ml:model03
+  args:
+  - [10, softmax,  0.9, gpu]
+  - [10, relu,     0.9, gpu]
+  - [10, tanh,     0.9, gpu]
+  - [10, linear,   0.9, gpu]
+  - [20, selu,     0.9, gpu]
+  - [20, elu,      0.9, gpu]
+  - [25, sigmoid,  0.9, gpu]
+  - [25, softsign, 0.9, gpu]
