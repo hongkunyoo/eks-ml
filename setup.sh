@@ -1,15 +1,26 @@
 # installing eksctl
+# installing eksctl
 echo '>> Installing eksctl...'
-curl --silent --location "[https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$](https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$)(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 mv /tmp/eksctl /usr/local/bin
 echo '>> done'
 
 
 # installing heptio-authenticator
-echo '>> Installing heptio authenticator...'
-wget [https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.3.0/heptio-authenticator-aws_0.3.0_linux_amd64](https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.3.0/heptio-authenticator-aws_0.3.0_linux_amd64) -O heptio-authenticator-aws 
-chmod +x heptio-authenticator-aws 
-mv heptio-authenticator-aws /usr/local/bin/
+echo '>> Installing aws-iam-authenticator...'
+curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/aws-iam-authenticator
+chmod +x ./aws-iam-authenticator
+mv aws-iam-authenticator /usr/local/bin
+echo '>> done'
+
+
+# installing kubectl
+echo '>> Installing kubectl...'
+apt-get update && apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
+apt-get update
+apt-get install -y kubectl
 echo '>> done'
 
 
