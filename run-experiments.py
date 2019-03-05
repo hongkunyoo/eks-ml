@@ -18,7 +18,7 @@ spec:
         imagePullPolicy: Always
         resources:
           limits:
-            cpu: "2"
+            cpu: "1"
             memory: "6Gi"
       nodeSelector:
         ml-type: %s
