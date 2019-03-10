@@ -6,7 +6,7 @@ JOB_TEMPLATE = \
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: exp%s
+  name: exp%02d-%s
 spec:
   template:
     spec:
@@ -29,10 +29,10 @@ EOF
 with open('experiments.yaml') as f:
     experiments = yaml.load(f)
 
-count = 0
+count = 1
 for exp in experiments:
     for idx, arg in enumerate(exp['args']):
-        run_job_cmd = JOB_TEMPLATE % tuple(str(count), exp['script'], arg)
+        run_job_cmd = JOB_TEMPLATE % tuple([count, arg[-1], exp['script'], *arg])
         ######################
         # Run exp
         ######################

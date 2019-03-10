@@ -3,8 +3,8 @@ if bash -c '[[ $EUID -ne 0 ]]'; then
    exit 1
 fi
 
-
 INSTANCE_NUM=${1:-7}
+CLUSTER_NAME=eks-ml
 
 # installing eksctl
 echo '>>>>>>>> Installing eksctl >>>>>>>>>'
@@ -24,7 +24,7 @@ echo '>>>>>>>> done >>>>>>>>>'
 # installing kubectl
 echo '>>>>>>>> Installing kubectl >>>>>>>>>'
 apt-get update && apt-get install -y apt-transport-https
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
 apt-get update
 apt-get install -y kubectl
@@ -39,7 +39,7 @@ echo '>>>>>>>> done >>>>>>>>>'
 
 # k8s cluster
 echo '>>>>>>>> Creating k8s cluster >>>>>>>>>'
-echo "eksctl create cluster --name eks-ml --nodes $INSTANCE_NUM --node-type m5.xlarge"
+echo "eksctl create cluster --name $CLUSTER_NAME --nodes $INSTANCE_NUM --node-type m5.xlarge"
 echo '>>>>>>>> This will take a while'
 eksctl create cluster --name eks-ml --nodes $INSTANCE_NUM --node-type m5.xlarge
 sleep 20
@@ -78,6 +78,22 @@ EOF
 
 helm init --service-account tiller
 sleep 20
-helm install stable/metrics-server --name stats --namespace kube-system --set args={--logtostderr,--metric-resolution=2s}
+helm install stable/metrics-server --name stats --namespace kube-system --set 'args={--logtostderr,--metric-resolution=2s}'
 chown $SUDO_UID:$SUDO_GID $HOME/.kube/config
+echo '>>>>>>>> done >>>>>>>>>'
+
+
+
+echo '>>>>>>>> Installing Cluster auto scaler >>>>>>>>>'
+NG_ID=$(eksctl get nodegroup --cluster $CLUSTER_NAME | cut -d ' ' -f1 | sed 1d | cut -f2)
+NG_STACK=eksctl-$CLUSTER_NAME-nodegroup-$NG_ID
+ASG_ID=$(aws cloudformation describe-stack-resource --stack-name $NG_STACK --logical-resource-id NodeGroup --query StackResourceDetail.PhysicalResourceId --output text)
+
+aws autoscaling create-or-update-tags --tags ResourceId=$ASG_ID,ResourceType=auto-scaling-group,Key=k8s.io/cluster-autoscaler/enabled,Value=,PropagateAtLaunch=true
+aws autoscaling create-or-update-tags --tags ResourceId=$ASG_ID,ResourceType=auto-scaling-group,Key=k8s.io/cluster-autoscaler/$CLUSTER_NAME,Value=,PropagateAtLaunch=true
+
+NODE_ROLE=$(aws cloudformation describe-stack-resource --stack-name $NG_STACK --logical-resource-id NodeInstanceRole --query StackResourceDetail.PhysicalResourceId --output text)
+aws iam put-role-policy --role-name $NODE_ROLE --policy-name autoscale --policy-document '{ "Version": "2012-10-17", "Statement": [ { "Effect": "Allow",  "Action": [ "autoscaling:*" ], "Resource": "*" } ] }'
+
+helm install stable/cluster-autoscaler --name autoscale --namespace kube-system --set autoDiscovery.clusterName=$CLUSTER_NAME,awsRegion=ap-northeast-2,sslCertPath=/etc/kubernetes/pki/ca.crt
 echo '>>>>>>>> done >>>>>>>>>'
