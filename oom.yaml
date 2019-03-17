@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: exp01-oom
+  name: exp-oom
 spec:
   template:
     spec:

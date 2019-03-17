@@ -6,7 +6,7 @@ JOB_TEMPLATE = \
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: exp%02d-%s
+  name: exp%02d
 spec:
   template:
     spec:
@@ -19,9 +19,7 @@ spec:
         resources:
           limits:
             cpu: "1"
-            memory: "6Gi"
-      nodeSelector:
-        ml-type: %s
+            memory: "7Gi"
       restartPolicy: Never
 EOF
 """
@@ -32,7 +30,7 @@ with open('experiments.yaml') as f:
 count = 1
 for exp in experiments:
     for idx, arg in enumerate(exp['args']):
-        run_job_cmd = JOB_TEMPLATE % tuple([count, arg[-1], exp['script'], *arg])
+        run_job_cmd = JOB_TEMPLATE % tuple([count, exp['script'], *arg])
         ######################
         # Run exp
         ######################
