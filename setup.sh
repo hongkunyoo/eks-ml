@@ -49,6 +49,9 @@ echo '>>>>>>>> This will take a while (about 15 min)'
 eksctl create cluster --name $CLUSTER_NAME --node-type m5.xlarge --nodes-min=6 --nodes-max=12
 sleep 20
 
+echo '#########################################'
+echo '>>>> Labeling nodes (cpu, mem, gpu) >>>>>'
+echo '#########################################'
 for node in $(kubectl get node | cut -d ' ' -f1 | sed 1d)
 do
     ml_type=$(echo cpu mem gpu | xargs shuf -n1 -e)
