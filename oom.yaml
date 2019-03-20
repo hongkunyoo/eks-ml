@@ -15,8 +15,6 @@ spec:
           limits:
             cpu: "1"
             memory: "5Gi"
-      nodeSelector:
-        ml-type: cpu
       restartPolicy: Never
   backoffLimit: 0
 

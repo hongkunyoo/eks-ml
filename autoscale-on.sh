@@ -7,6 +7,7 @@ NG_ID=$(eksctl get nodegroup --cluster $CLUSTER_NAME | cut -d ' ' -f1 | sed 1d |
 NG_STACK=eksctl-$CLUSTER_NAME-nodegroup-$NG_ID
 ASG_ID=$(aws cloudformation describe-stack-resource --stack-name $NG_STACK --logical-resource-id NodeGroup --query StackResourceDetail.PhysicalResourceId --output text)
 
+
 echo '#################################################'
 echo '>>>>>>>> Tag cluster-autoscaler/enabled >>>>>>>>>'
 echo '#################################################'
@@ -20,6 +21,21 @@ aws iam put-role-policy --role-name $NODE_ROLE --policy-name autoscale --policy-
 echo '################################################'
 echo '>>>>>>>> Installing cluster-autoscaler >>>>>>>>>'
 echo '################################################'
+cat <<EOF | kubectl create -f -
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kube-system-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: kube-system
+EOF
+
 helm install stable/cluster-autoscaler --name autoscale --namespace kube-system --set autoDiscovery.clusterName=$CLUSTER_NAME,awsRegion=ap-northeast-2,sslCertPath=/etc/kubernetes/pki/ca.crt
 echo '################################'
 echo '>>>>>>>>>>>>> done >>>>>>>>>>>>>'
