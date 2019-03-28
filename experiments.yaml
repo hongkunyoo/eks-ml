@@ -16,7 +16,7 @@
   - [10, elu,      0.7]
   - [10, sigmoid,  0.8]
 
-- script: hongkunyoo/eks-ml:model03
+- script: hongkunyoo/eks-ml:oom
   args:
   - [10, softmax,  0.2]
   - [10, relu,     0.3]
