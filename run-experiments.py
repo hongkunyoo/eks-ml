@@ -18,8 +18,8 @@ spec:
         imagePullPolicy: Always
         resources:
           limits:
-            cpu: "1"
-            memory: "7Gi"
+            cpu: "0.8"
+            memory: "3.8Gi"
       restartPolicy: Never
 EOF
 """

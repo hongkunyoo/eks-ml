@@ -44,9 +44,9 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash
 echo '#######################################'
 echo '>>>>>>>> Creating k8s cluster >>>>>>>>>'
 echo '#######################################'
-echo "eksctl create cluster --name $CLUSTER_NAME --node-type m5.xlarge --nodes-min=6 --nodes-max=12"
+echo "eksctl create cluster --name $CLUSTER_NAME --node-type m5.large --nodes-min=4 --nodes-max=8"
 echo '>>>>>>>> This will take a while (about 15 min)'
-eksctl create cluster --name $CLUSTER_NAME --node-type m5.xlarge --nodes-min=6 --nodes-max=12
+eksctl create cluster --name $CLUSTER_NAME --node-type m5.large --nodes-min=4 --nodes-max=8
 sleep 20
 
 #echo '#########################################'
