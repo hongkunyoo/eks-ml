@@ -21,6 +21,7 @@ spec:
             cpu: "0.8"
             memory: "3.8Gi"
       restartPolicy: Never
+  backoffLimit: 0
 EOF
 """
 
