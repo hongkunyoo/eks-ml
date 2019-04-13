@@ -18,8 +18,8 @@ arr = []
 pbar = tqdm(range(1000))
 pbar.set_description("Training")
 for i in pbar:
-    a = bytearray(12000000)
-    time.sleep(0.07)
+    a = bytearray(10000000)
+    time.sleep(0.1)
     arr.append(a)
 
 

@@ -6,4 +6,3 @@ RUN pip install h5py==2.7.1
 RUN pip install tqdm
 
 ADD train.py .
-ADD train-oom.py .
