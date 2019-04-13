@@ -14,7 +14,7 @@ print(sys.argv)
 # Out of memory Error
 #######################
 arr = []
-for i in range(1000):
+for i in range(1200):
     a = bytearray(10000000)
     time.sleep(0.1)
     arr.append(a)

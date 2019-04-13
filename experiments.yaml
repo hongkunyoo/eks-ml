@@ -6,7 +6,6 @@
   - [10, linear,   0.5]
   - [10, elu,      0.7]
   - [10, sigmoid,  0.8]
-  - [10, selu,     0.9]
 
 - script: hongkunyoo/eks-ml:model02
   args:
@@ -16,7 +15,6 @@
   - [10, linear,   0.5]
   - [10, elu,      0.7]
   - [10, sigmoid,  0.8]
-  - [10, selu,     0.9]
 
 - script: hongkunyoo/eks-ml:model03
   args:
@@ -26,7 +24,6 @@
   - [10, linear,   0.5]
   - [10, elu,      0.7]
   - [10, sigmoid,  0.8]
-  - [10, selu,     0.9]
 
 - script: hongkunyoo/eks-ml:oom
   args:
