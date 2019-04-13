@@ -1,5 +1,4 @@
 import os, sys, json, time
-from tqdm import tqdm
 
 
 #######################
@@ -15,9 +14,7 @@ print(sys.argv)
 # Out of memory Error
 #######################
 arr = []
-pbar = tqdm(range(1000))
-pbar.set_description("Training")
-for i in pbar:
+for i in range(1000):
     a = bytearray(10000000)
     time.sleep(0.1)
     arr.append(a)
