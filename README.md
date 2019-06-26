@@ -3,6 +3,7 @@ AWS summit seoul 2019 - How to scale your ml job with Amazon EKS
 - SlideShare: https://pt.slideshare.net/awskorea/amazon-eks-lg-aws-summit-seoul-2019
 - Video: https://www.youtube.com/watch?v=egv2TlfLL1Y&list=PLORxAVAC5fUWyB6Hsk9ibYJHw97k1h6s9&index=46
 
+## Scripts description
 - `setup.sh`: setup script before demo
 - `train.py`: model script to train
 - `train-oom.py`: model script to demonstrate OOM error
